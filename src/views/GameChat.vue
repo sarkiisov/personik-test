@@ -22,11 +22,11 @@ const finishGame = () => {
   router.push({ name: 'result' });
 };
 
-onBeforeMount(() => {
+const resetState = () => {
   gameStore.$reset();
-});
+};
 
-watch(isPlayerTurn, async () => {
+const triggerOpponent = async () => {
   try {
     if (isPlayerTurn.value) return;
     const city = await opponentUtils.generateCityAnswer(
@@ -37,5 +37,9 @@ watch(isPlayerTurn, async () => {
   } catch (error) {
     finishGame();
   }
-});
+};
+
+onBeforeMount(resetState);
+
+watch(isPlayerTurn, triggerOpponent);
 </script>
